@@ -1,0 +1,44 @@
+{
+  "sessions": [
+    {
+      "id": "689818355:689818355",
+      "data": {
+        "userName": "hulio_zas",
+        "userRate": "basic",
+        "canSendMessage": false,
+        "video1Link": "https://f90d-46-216-236-211.ngrok-free.app/video1/689818355",
+        "video2Link": "https://f90d-46-216-236-211.ngrok-free.app/video2/689818355",
+        "video3Link": "https://f90d-46-216-236-211.ngrok-free.app/video3/689818355",
+        "video4BtoALink": "https://f90d-46-216-236-211.ngrok-free.app/video4BA/689818355",
+        "video4BtoPLink": "https://f90d-46-216-236-211.ngrok-free.app/video4BP/689818355",
+        "fullName": "Давдвщцд",
+        "instName": "Л душа",
+        "whoAreYou": "Вьсвллаул",
+        "userAim": "Вталцшал",
+        "realizeAim": "Вьслцл",
+        "userWeaknesses": "Лащыыщл",
+        "userClient": "Влвщцщш"
+      }
+    },
+    {
+      "id": "514751965:514751965",
+      "data": {
+        "userName": "azhypa",
+        "userRate": "pro",
+        "canSendMessage": false,
+        "video1Link": "https://f90d-46-216-236-211.ngrok-free.app/video1/514751965",
+        "video2Link": "https://f90d-46-216-236-211.ngrok-free.app/video2/514751965",
+        "video3Link": "https://f90d-46-216-236-211.ngrok-free.app/video3/514751965",
+        "video4BtoALink": "https://f90d-46-216-236-211.ngrok-free.app/video4BA/514751965",
+        "video4BtoPLink": "https://f90d-46-216-236-211.ngrok-free.app/video4BP/514751965",
+        "fullName": "1",
+        "instName": "2",
+        "whoAreYou": "3",
+        "userAim": "4",
+        "realizeAim": "5",
+        "userWeaknesses": "6",
+        "userClient": "7"
+      }
+    }
+  ]
+}
