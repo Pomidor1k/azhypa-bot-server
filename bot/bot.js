@@ -93,6 +93,25 @@ bot.start(async (ctx) => {
 
 /*--------------BOT START MESSAGE----------*/
 
+/*------------IGNORING MESSAGES-------------*/
+bot.on('text', (ctx, next) => {
+    if (!ctx.session.canSendMessage) {
+        return;
+    } else {
+        return next();
+    }
+});
+
+
+const ignoreEvents = ['photo', 'video', 'voice', 'document'];
+
+bot.on(ignoreEvents, (ctx, next) => {
+    
+});
+/*------------IGNORING MESSAGES-------------*/
+
+
+
 /*--------------CHOSEN RATE HANDLERS-----------*/
 //pro
 bot.action("payment_pro_rate_button", async (ctx) => {
@@ -238,7 +257,9 @@ bot.on("web_app_data", async ctx => {
         }
 
         try {
-            await ctx.replyWithPhoto({source: '../assets/images/payment_success.jpg'}, keyboards.primaryPaymentSuccessKeyboard)
+            await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
+                ...keyboards.primaryPaymentSuccessKeyboard
+              });
         } catch (error) {
             console.error(error);
 
@@ -330,9 +351,9 @@ bot.on("web_app_data", async ctx => {
         }
     } else if (data.webAppType === 'checkUpgradeBasToAdvWebApp') {
         const userEmail = data.userEmail
-        const paymentPrice = data.paymentPrice
+        const productId = data.productId
 
-        if (`${paymentPrice}` !== '29') {
+        if (`${productId}` !== '27008') {
             try {
                 await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, keyboards.checkUpgradeBasicKeyboard)
             } catch (error) {
@@ -373,9 +394,9 @@ bot.on("web_app_data", async ctx => {
         }
     } else if (data.webAppType === 'checkUpgradeBasToProWebApp') {
         const userEmail = data.userEmail
-        const paymentPrice = data.paymentPrice
+        const productId = data.productId
 
-        if (`${paymentPrice}` !== '50') {
+        if (`${productId}` !== '27010') {
             try {
                 await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, keyboards.checkUpgradeBasicKeyboard)
             } catch (error) {
@@ -667,7 +688,9 @@ bot.action("get_access_to_chat_button", async (ctx) => {
 
 
 bot.action("start_sign_up_button", async (ctx) => {
+    ctx.session.canSendMessage = true
     await resetUserInfoAnswers(ctx)
+
 
     try {
         await ctx.replyWithHTML(messages.userFullName)
@@ -732,6 +755,8 @@ bot.action("give_data_again_button", async (ctx) => {
 
 bot.action("answers_are_right_button", async (ctx) => {
     const userId = ctx.from.id
+
+    ctx.session.canSendMessage = false
 
     try {
         await ctx.deleteMessage()
