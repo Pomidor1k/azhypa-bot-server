@@ -9,7 +9,7 @@ const chooseRateKeyboard = Markup.inlineKeyboard([
 
 const checkPaymentKeyboard =  Markup.keyboard([
     Markup.button.webApp("Проверить оплату💵", `${vars.SERVER_URL}/payment_check_page`)
-]).resize()
+]).resize().oneTime()
 
 const primaryPaymentSuccessKeyboard = Markup.inlineKeyboard([
     [Markup.button.callback('Оплата есть. Погружаемся!🎉', 'primary_payment_success_button')]
@@ -21,7 +21,7 @@ const goToFirstVideoKeyboard = Markup.inlineKeyboard([
 
 const startFirstTestKeyboard =  Markup.keyboard([
     Markup.button.webApp("Проверить знания📚", `${vars.SERVER_URL}/test_one`)
-]).resize()
+]).resize().oneTime()
 
 const introSecondLessonKeyboard = Markup.inlineKeyboard([
     [Markup.button.callback('Перейти к уроку🎉', 'watch_lesson_two_button')]
@@ -29,7 +29,7 @@ const introSecondLessonKeyboard = Markup.inlineKeyboard([
 
 const startSecondTestKeyboard =  Markup.keyboard([
     Markup.button.webApp("Проверить знания📚", `${vars.SERVER_URL}/test_two`)
-]).resize()
+]).resize().oneTime()
 
 const introThirdLessonKeyboard = Markup.inlineKeyboard([
     [Markup.button.callback('Перейти к уроку🎉', 'watch_lesson_three_button')]
@@ -45,7 +45,7 @@ const startSignUpForSessionKeyboard =  Markup.inlineKeyboard([
 
 const checkUpgradeAdvToProKeyboard =  Markup.keyboard([
     Markup.button.webApp("Проверить оплату💵", `${vars.SERVER_URL}/upgrade_adv_pro_check`)
-]).resize()
+]).resize().oneTime()
 
 const checkAnswersKeyboard = Markup.inlineKeyboard([
     [Markup.button.callback('Ответы верные✅', 'answers_are_right_button')],
@@ -55,7 +55,7 @@ const checkAnswersKeyboard = Markup.inlineKeyboard([
 const checkUpgradeBasicKeyboard =  Markup.keyboard([
     Markup.button.webApp("Проверить оплату ADVANCED💵", `${vars.SERVER_URL}/upgrade_bas_adv_check`),
     Markup.button.webApp("Проверить оплату PRO💵", `${vars.SERVER_URL}/upgrade_bas_pro_check`)
-]).resize()
+]).resize().oneTime()
 
 const basicToAdvancedVideoFourKeyboard = Markup.inlineKeyboard([
     [Markup.button.callback('Смотреть урок №4🖥', 'basic_to_advanced_video_four_button')]
