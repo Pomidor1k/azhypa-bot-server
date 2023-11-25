@@ -557,7 +557,7 @@ bot.action("watch_lesson_three_button", async (ctx) => {
                 await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
                 await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
             } else if (ctx.session.userRate === 'basic') {
-                await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, keyboards.getAccessToChatKeyboard)
             }
         }, 5000);
 
@@ -578,7 +578,7 @@ bot.action("watch_lesson_three_button", async (ctx) => {
                     await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
                     await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
                 } else if (ctx.session.userRate === 'basic') {
-                    await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
+                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, keyboards.getAccessToChatKeyboard)
                 }
             }, 5000);
         }, 2000);
@@ -801,7 +801,7 @@ bot.action("basic_to_advanced_video_four_button", async (ctx) => {
 
     try {
         setTimeout(async () => {
-            await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
+            await ctx.replyWithDocument({source: '../assets/images/formula1.png'})
             await ctx.replyWithHTML(messages.basicToAdvancedFinalMsg)
         }, 5000);
     } catch (error) {
@@ -823,7 +823,7 @@ bot.action("basic_to_pro_video_four_button", async (ctx) => {
         })
 
         setTimeout(async () => {
-            await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
+            await ctx.replyWithDocument({source: '../assets/images/formula1.png'})
             await ctx.replyWithHTML(messages.signUpForSessionMsg, keyboards.startSignUpForSessionKeyboard)
         }, 5000);
     } catch (error) {
