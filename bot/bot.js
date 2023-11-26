@@ -33,11 +33,11 @@ bot.start(async (ctx) => {
     ctx.session.userName = userName
     ctx.session.userRate = userRate
     ctx.session.canSendMessage = false
-    ctx.session.video1Link = `${vars.SERVER_URL}/video1/${userId}`
-    ctx.session.video2Link = `${vars.SERVER_URL}/video2/${userId}`
-    ctx.session.video3Link = `${vars.SERVER_URL}/video3/${userId}`
-    ctx.session.video4BtoALink = `${vars.SERVER_URL}/video4BA/${userId}`
-    ctx.session.video4BtoPLink = `${vars.SERVER_URL}/video4BP/${userId}`
+    ctx.session.video1Link = `${vars.SERVER_URL}/ZjUOfUNFnu/${userId}`
+    ctx.session.video2Link = `${vars.SERVER_URL}/QinfOnFiuA/${userId}`
+    ctx.session.video3Link = `${vars.SERVER_URL}/unfUFnuduP/${userId}`
+    ctx.session.video4BtoALink = `${vars.SERVER_URL}/bYyhiboBbx/${userId}`
+    ctx.session.video4BtoPLink = `${vars.SERVER_URL}/iuBuogiytf/${userId}`
 
     /*delete later*/
     await dataBase.createPaymentTest()
@@ -461,7 +461,7 @@ bot.action("watch_lessons_one_button", async (ctx) => {
     const userId = ctx.from.id
 
     const finishedFirstVideoKeyboard = Markup.inlineKeyboard([
-        [Markup.button.url('Смотреть урок №1🖥', `${vars.SERVER_URL}/video1/${userId}`)]
+        [Markup.button.url('Смотреть урок №1🖥', `${ctx.session.video1Link}`)]
     ]);
 
     try {
