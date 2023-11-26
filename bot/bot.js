@@ -258,8 +258,13 @@ bot.on("web_app_data", async ctx => {
 
         try {
             await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
-                ...keyboards.primaryPaymentSuccessKeyboard
+                reply_markup: {remove_keyboard: true}
               });
+
+            setTimeout(async () => {
+                await ctx.replyWithHTML(messages.fisrtVideoIntroMsg, keyboards.goToFirstVideoKeyboard)
+            }, 1500);
+
         } catch (error) {
             console.error(error);
 
@@ -321,12 +326,23 @@ bot.on("web_app_data", async ctx => {
         const userEmail = data.userEmail
 
         try {
-            await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+            await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
+                reply_markup: {remove_keyboard: true}
+              });
+
+            setTimeout(async () => {
+                await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+            }, 1500);
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+                await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
+                    reply_markup: {remove_keyboard: true}
+                  });
+                setTimeout(async () => {
+                    await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+                }, 1500);
             }, 2000);
         }
         
@@ -441,19 +457,6 @@ bot.on("web_app_data", async ctx => {
 /*------------DATA FROM WEB APP PAYMENT CHECK HANDLER-------*/
 
 
-//after payment first lesson intro
-bot.action("primary_payment_success_button", async (ctx) => {
-
-    try {
-        await ctx.replyWithHTML(messages.fisrtVideoIntroMsg, keyboards.goToFirstVideoKeyboard)
-    } catch (error) {
-        console.error(error);
-
-        setTimeout(async () => {
-            await ctx.replyWithHTML(messages.fisrtVideoIntroMsg, keyboards.goToFirstVideoKeyboard)
-        }, 2000);
-    }
-})
 
 //first video link sending
 bot.action("watch_lessons_one_button", async (ctx) => {
@@ -551,10 +554,10 @@ bot.action("watch_lesson_three_button", async (ctx) => {
 
         setTimeout(async () => {
             if (ctx.session.userRate === 'pro') {
-                await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
                 await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
             } else if (ctx.session.userRate === 'advanced') {
-                await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
                 await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
             } else if (ctx.session.userRate === 'basic') {
                 await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, keyboards.getAccessToChatKeyboard)
@@ -572,10 +575,10 @@ bot.action("watch_lesson_three_button", async (ctx) => {
     
             setTimeout(async () => {
                 if (ctx.session.userRate === 'pro') {
-                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
+                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
                     await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
                 } else if (ctx.session.userRate === 'advanced') {
-                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
+                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
                     await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
                 } else if (ctx.session.userRate === 'basic') {
                     await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, keyboards.getAccessToChatKeyboard)
@@ -626,12 +629,21 @@ bot.command("skip_bas_adv_upgrade", async (ctx) => {
 bot.action("get_access_to_chat_button", async (ctx) => {
 
     try {
-        await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi")
+        if (ctx.session.userRate === 'basic') {
+            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {reply_markup: {remove_keyboard: true}})
+        } else {
+            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi")
+        }
+        
     } catch (error) {
         console.error(error);
 
         setTimeout(async () => {
-            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi")
+            if (ctx.session.userRate === 'basic') {
+                await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {reply_markup: {remove_keyboard: true}})
+            } else {
+                await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi")
+            }
         }, 2000);
     }
 
@@ -801,7 +813,7 @@ bot.action("basic_to_advanced_video_four_button", async (ctx) => {
 
     try {
         setTimeout(async () => {
-            await ctx.replyWithDocument({source: '../assets/images/formula1.png'})
+            await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {reply_markup: {remove_keyboard: true}})
             await ctx.replyWithHTML(messages.basicToAdvancedFinalMsg)
         }, 5000);
     } catch (error) {
@@ -823,7 +835,7 @@ bot.action("basic_to_pro_video_four_button", async (ctx) => {
         })
 
         setTimeout(async () => {
-            await ctx.replyWithDocument({source: '../assets/images/formula1.png'})
+            await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {reply_markup: {remove_keyboard: true}})
             await ctx.replyWithHTML(messages.signUpForSessionMsg, keyboards.startSignUpForSessionKeyboard)
         }, 5000);
     } catch (error) {
