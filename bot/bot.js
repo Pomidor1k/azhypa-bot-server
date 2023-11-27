@@ -39,10 +39,6 @@ bot.start(async (ctx) => {
     ctx.session.video4BtoALink = `${vars.SERVER_URL}/bYyhiboBbx/${userId}`
     ctx.session.video4BtoPLink = `${vars.SERVER_URL}/iuBuogiytf/${userId}`
 
-    /*delete later*/
-    await dataBase.createPaymentTest()
-    await dataBase.createPaymentTestAzhypa()
-    /*delete later*/
 
     //Adding user info to DB(depends on user's rate)
     try {
@@ -808,8 +804,6 @@ bot.action("get_access_to_chat_button", async (ctx) => {
         }
 
         try {
-            await dataBase.createPaymentTest()
-            await dataBase.createPaymentTestAzhypa()
             await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса ADVANCED, сейчас у тебя есть возможность апгрейднуться до PRO и попасть на стратегическую сессию 1-на-1 со мной всего за 20$.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня. Завтра оно сгорает. Так что думай и решай.\n\nЕсли интересно, вот тебе ссылка:\n${vars.ADVANCED_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.` , {
                 protect_content: true,
                 ...keyboards.checkUpgradeAdvToProKeyboard
@@ -838,9 +832,6 @@ bot.action("get_access_to_chat_button", async (ctx) => {
                 })
             }, 2000);
         }
-
-        await dataBase.createPaymentTest(50)
-        await dataBase.createPaymentTestAzhypa(50)
         
         try {
             await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса BASIC, я предлагаю тебе 2 апгрейда.\n\nДо advanced за 30$ - ты получишь +1 урок, с более углубленным материалом и разбором реальных коммерческих проектов.\n\nА апгрейд до PRO за 50$ даст тебе возможность не только получить +1 урок с разбором коммерческих проектов, но и стратегическую сессию, созвон 1-на-1 со мной.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня Завтра оно сгорает Так что думай и решай. Если интересно, вот тебе ссылки для оплаты:\n\nADVANCED: ${vars.BASIC_TO_ADVANCED_UPGRADE_LINK}\n\nPRO: ${vars.BASIC_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.`, {

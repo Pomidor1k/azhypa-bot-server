@@ -9,42 +9,6 @@ const db = admin.firestore()
 /*---------INITIALIZING-------*/
 
 
-/*delete later*/
-async function createPaymentTest(paymentPrice) {
-    try {
-        const db = admin.firestore();
-        const usersRef = db.collection('paymentKeys');
-
-        await usersRef.doc(String("thepomidorik@gmail.com")).set({
-            userName: "Шавель Евгений Дмитриевич",
-            userPhone: "+375292764177",
-            paymentPrice: paymentPrice ? paymentPrice : '29'
-        });
-
-        console.log(`User document created for userId`);
-    } catch (error) {
-        console.error('Error creating user document:', error);
-    }
-}
-
-
-async function createPaymentTestAzhypa(paymentPrice) {
-    try {
-        const db = admin.firestore();
-        const usersRef = db.collection('paymentKeys');
-
-        await usersRef.doc(String("s.azhypa@gmail.com")).set({
-            userName: "Test Test",
-            userPhone: "+3756666666",
-            paymentPrice: paymentPrice ? paymentPrice : '29'
-        });
-
-        console.log(`User document created for userId`);
-    } catch (error) {
-        console.error('Error creating user document:', error);
-    }
-}
-/*delete later*/
 
 
 
@@ -264,8 +228,6 @@ module.exports = {
     addUserSignUpAnswers,
     deleteUserPaymentKey,
     updateUserAfterUpfgradeAdvToPro,
-    createPaymentTest,
     updateUserAfterUpfgradeBasToAdv,
-    updateUserAfterUpfgradeBasToPro,
-    createPaymentTestAzhypa
+    updateUserAfterUpfgradeBasToPro
 }
