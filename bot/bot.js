@@ -58,6 +58,7 @@ bot.start(async (ctx) => {
     if (ctx.session.userRate === 'none') { //If user rate is not defined(user came not by the link)
         try {
             await ctx.replyWithPhoto({source: '../assets/images/welcome.jpg'}, {
+                protect_content: true,
                 parse_mode: "Markdown",
                 caption: messages.chooseRateMsg,
                 ...keyboards.chooseRateKeyboard
@@ -66,7 +67,11 @@ bot.start(async (ctx) => {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(messages.chooseRateMsg, keyboards.chooseRateKeyboard)
+                await ctx.replyWithHTML(messages.chooseRateMsg, {
+                    parse_mode: 'Markdown',
+                    protect_content: true,
+                    ...keyboards.chooseRateKeyboard
+                })
             }, 2000);
         }
     } else { //User came by the link from website(contains rate parameter)
@@ -77,6 +82,7 @@ bot.start(async (ctx) => {
         }
         try {
             await ctx.replyWithPhoto({source: '../assets/images/welcome.jpg'}, {
+                protect_content: true,
                 parse_mode: "Markdown",
                 caption: messages.welcomeToCourseMsg + paymentLinks[ctx.session.userRate],
                 ...keyboards.checkPaymentKeyboard
@@ -85,7 +91,10 @@ bot.start(async (ctx) => {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(messages.welcomeToCourseMsg + paymentLinks[ctx.session.userRate], keyboards.checkPaymentKeyboard)
+                await ctx.replyWithHTML(messages.welcomeToCourseMsg + paymentLinks[ctx.session.userRate], {
+                    protect_content: true,
+                    ...keyboards.checkPaymentKeyboard
+                })
             }, 2000);
         }
     }
@@ -119,7 +128,7 @@ bot.action("payment_pro_rate_button", async (ctx) => {
     ctx.session.userRate = 'pro'
 
     try {
-        ctx.deleteMessage()
+        await ctx.deleteMessage()
     } catch (error) {
         console.error(error);
     }
@@ -135,10 +144,16 @@ bot.action("payment_pro_rate_button", async (ctx) => {
     }
 
     try {
-        await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.PRO_PAYMENT_LINK, keyboards.checkPaymentKeyboard)
+        await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.PRO_PAYMENT_LINK, {
+            protect_content: true,
+            ...keyboards.checkPaymentKeyboard
+        })
     } catch (error) {
         setTimeout(async () => {
-            await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.PRO_PAYMENT_LINK, keyboards.checkPaymentKeyboard)
+            await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.PRO_PAYMENT_LINK, {
+                protect_content: true,
+                ...keyboards.checkPaymentKeyboard
+            })
         }, 2000);
     }
 
@@ -150,7 +165,7 @@ bot.action("payment_advanced_rate_button", async (ctx) => {
     ctx.session.userRate = 'advanced'
 
     try {
-        ctx.deleteMessage()
+        await ctx.deleteMessage()
     } catch (error) {
         console.error(error);
     }
@@ -166,10 +181,16 @@ bot.action("payment_advanced_rate_button", async (ctx) => {
     }
 
     try {
-        await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.ADVANCED_PAYMENT_LINK, keyboards.checkPaymentKeyboard)
+        await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.ADVANCED_PAYMENT_LINK, {
+            protect_content: true,
+            ...keyboards.checkPaymentKeyboard
+        })
     } catch (error) {
         setTimeout(async () => {
-            await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.ADVANCED_PAYMENT_LINK, keyboards.checkPaymentKeyboard)
+            await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.ADVANCED_PAYMENT_LINK, {
+                protect_content: true,
+                ...keyboards.checkPaymentKeyboard
+            })
         }, 2000);
     }
 
@@ -181,7 +202,7 @@ bot.action("payment_basic_rate_button", async (ctx) => {
     ctx.session.userRate = 'basic'
 
     try {
-        ctx.deleteMessage()
+        await ctx.deleteMessage()
     } catch (error) {
         console.error(error);
     }
@@ -197,10 +218,16 @@ bot.action("payment_basic_rate_button", async (ctx) => {
     }
 
     try {
-        await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.BASIC_PAYMENT_LINK, keyboards.checkPaymentKeyboard)
+        await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.BASIC_PAYMENT_LINK, {
+            protect_content: true,
+            ...keyboards.checkPaymentKeyboard
+        })
     } catch (error) {
         setTimeout(async () => {
-            await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.BASIC_PAYMENT_LINK, keyboards.checkPaymentKeyboard)
+            await ctx.replyWithHTML(messages.welcomeToCourseMsg + vars.BASIC_PAYMENT_LINK, {
+                protect_content: true,
+                ...keyboards.checkPaymentKeyboard
+            })
         }, 2000);
     }
 
@@ -218,6 +245,7 @@ bot.command("skip_primary_payment", async (ctx) => {
     await dataBase.deleteUserPaymentKey(`${userEmail}`)
     await ctx.replyWithPhoto({source: '../assets/images/payment_success.jpg'}, keyboards.primaryPaymentSuccessKeyboard)
 }) 
+
 
 /*-------ADMIN PAYMENT SKIP--------*/
 
@@ -258,29 +286,42 @@ bot.on("web_app_data", async ctx => {
 
         try {
             await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
+                protect_content: true,
                 reply_markup: {remove_keyboard: true}
               });
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(messages.fisrtVideoIntroMsg, keyboards.goToFirstVideoKeyboard)
+                await ctx.replyWithHTML(messages.fisrtVideoIntroMsg, {
+                    protect_content: true,
+                    ...keyboards.goToFirstVideoKeyboard,
+                })
             }, 1500);
 
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithHTML("Оплата прошла успешно!", keyboards.primaryPaymentSuccessKeyboard)
+                await ctx.replyWithHTML("Оплата прошла успешно!", {
+                    protect_content: true,
+                    ...keyboards.primaryPaymentSuccessKeyboard
+                })
             }, 2000);
         }
     } else if (data.webAppType === 'testOneWebApp') {
         if (data.testPassed) {
             try {
-                await ctx.replyWithHTML(messages.secondVideoIntroMsg, keyboards.introSecondLessonKeyboard)
+                await ctx.replyWithHTML(messages.secondVideoIntroMsg, {
+                    protect_content: true,
+                    ...keyboards.introSecondLessonKeyboard
+                })
             } catch (error) {
                 console.error(error);
 
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.secondVideoIntroMsg, keyboards.introSecondLessonKeyboard)
+                    await ctx.replyWithHTML(messages.secondVideoIntroMsg, {
+                        protect_content: true,
+                        ...keyboards.introSecondLessonKeyboard
+                    })
                 }, 2000);
             }
 
@@ -299,12 +340,18 @@ bot.on("web_app_data", async ctx => {
     } else if (data.webAppType === 'testTwoWebApp') {
         if (data.testPassed) {
             try {
-                await ctx.replyWithHTML(messages.thirdVideoIntroMsg, keyboards.introThirdLessonKeyboard)
+                await ctx.replyWithHTML(messages.thirdVideoIntroMsg, {
+                    protect_content: true,
+                    ...keyboards.introThirdLessonKeyboard
+                })
             } catch (error) {
                 console.error(error);
 
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.thirdVideoIntroMsg, keyboards.introThirdLessonKeyboard)
+                    await ctx.replyWithHTML(messages.thirdVideoIntroMsg, {
+                        protect_content: true,
+                        ...keyboards.introThirdLessonKeyboard
+                    })
                 }, 2000);
             }
 
@@ -327,21 +374,29 @@ bot.on("web_app_data", async ctx => {
 
         try {
             await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
+                protect_content: true,
                 reply_markup: {remove_keyboard: true}
               });
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+                await ctx.replyWithHTML(messages.upgradeToProSuccess, {
+                    protect_content: true,
+                    ...keyboards.startSignUpForSessionKeyboard
+                })
             }, 1500);
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
                 await ctx.replyWithPhoto({ source: '../assets/images/payment_success.jpg' }, {
+                    protect_content: true,
                     reply_markup: {remove_keyboard: true}
                   });
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+                    await ctx.replyWithHTML(messages.upgradeToProSuccess, {
+                        protect_content: true,
+                        ...keyboards.startSignUpForSessionKeyboard
+                    })
                 }, 1500);
             }, 2000);
         }
@@ -371,22 +426,34 @@ bot.on("web_app_data", async ctx => {
 
         if (`${productId}` !== '27008') {
             try {
-                await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, keyboards.checkUpgradeBasicKeyboard)
+                await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, {
+                    protect_content: true,
+                    ...keyboards.checkUpgradeBasicKeyboard
+                })
             } catch (error) {
                 console.error(error);
 
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, keyboards.checkUpgradeBasicKeyboard)
+                    await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, {
+                        protect_content: true,
+                        ...keyboards.checkUpgradeBasicKeyboard
+                    })
                 }, 2000);
             }
         } else {
             try {
-                await ctx.replyWithHTML(messages.basicToAdvancedVideoFourMsg, keyboards.basicToAdvancedVideoFourKeyboard)
+                await ctx.replyWithHTML(messages.basicToAdvancedVideoFourMsg, {
+                    protect_content: true,
+                    ...keyboards.basicToAdvancedVideoFourKeyboard
+                })
             } catch (error) {
                 console.error(error);
 
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.basicToAdvancedVideoFourMsg, keyboards.basicToAdvancedVideoFourKeyboard)
+                    await ctx.replyWithHTML(messages.basicToAdvancedVideoFourMsg, {
+                        protect_content: true,
+                        ...keyboards.basicToAdvancedVideoFourKeyboard
+                    })
                 }, 2000);
             }
 
@@ -414,22 +481,34 @@ bot.on("web_app_data", async ctx => {
 
         if (`${productId}` !== '27010') {
             try {
-                await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, keyboards.checkUpgradeBasicKeyboard)
+                await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, {
+                    protect_content: true,
+                    ...keyboards.checkUpgradeBasicKeyboard
+                })
             } catch (error) {
                 console.error(error);
 
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, keyboards.checkUpgradeBasicKeyboard)
+                    await ctx.replyWithHTML(messages.basToAdvPaymentCheckFail, {
+                        protect_content: true,
+                        ...keyboards.checkUpgradeBasicKeyboard
+                    })
                 }, 2000);
             }
         } else {
             try {
-                await ctx.replyWithHTML(messages.basicToProVideoFourMsg, keyboards.basicToProVideoFourKeyboard)
+                await ctx.replyWithHTML(messages.basicToProVideoFourMsg, {
+                    protect_content: true,
+                    ...keyboards.basicToProVideoFourKeyboard
+                })
             } catch (error) {
                 console.error(error);
 
                 setTimeout(async () => {
-                    await ctx.replyWithHTML(messages.basicToProVideoFourMsg, keyboards.basicToProVideoFourKeyboard)
+                    await ctx.replyWithHTML(messages.basicToProVideoFourMsg, {
+                        protect_content: true,
+                        ...keyboards.basicToProVideoFourKeyboard
+                    })
                 }, 2000);
             }
 
@@ -469,6 +548,7 @@ bot.action("watch_lessons_one_button", async (ctx) => {
 
     try {
         await ctx.replyWithPhoto({source: '../assets/images/lesson1.jpg'}, {
+            protect_content: true,
             parse_mode: "Markdown",
             ...finishedFirstVideoKeyboard
         })
@@ -476,13 +556,17 @@ bot.action("watch_lessons_one_button", async (ctx) => {
         console.error(error);
 
         setTimeout(async () => {
-            await ctx.replyWithHTML("Урок 1", finishedFirstVideoKeyboard)
+            await ctx.replyWithHTML("Урок 1", {
+                protect_content: true,
+                ...finishedFirstVideoKeyboard
+            })
         }, 2000);
     }
 
     setTimeout(async () => {
         try {
             await ctx.replyWithPhoto({source: '../assets/images/test1.jpg'}, {
+                protect_content: true,
                 caption: messages.firstVideoOutroMsg,
                 parse_mode: 'Markdown',
                 ...keyboards.startFirstTestKeyboard
@@ -491,7 +575,10 @@ bot.action("watch_lessons_one_button", async (ctx) => {
             console.error(error);
 
             setTimeout(async () => {
-                ctx.replyWithHTML(messages.firstVideoOutroMsg, keyboards.startFirstTestKeyboard)
+                ctx.replyWithHTML(messages.firstVideoOutroMsg, {
+                    protect_content: true,
+                    ...keyboards.startFirstTestKeyboard
+                })
             }, 2000);
         }
     }, 10000);
@@ -507,12 +594,14 @@ bot.action("watch_lesson_two_button", async (ctx) => {
     
     try {
         await ctx.replyWithPhoto({source: '../assets/images/lesson2.jpg'}, {
+            protect_content: true,
             parse_mode: "Markdown",
             ...watchSecondLessonKeyboard
         })
 
         setTimeout(async () => {
             await ctx.replyWithPhoto({source: '../assets/images/test2.jpg'}, {
+                protect_content: true,
                 caption: messages.secondVideoOutroMsg,
                 parse_mode: "Markdown",
                 ...keyboards.startSecondTestKeyboard
@@ -523,13 +612,18 @@ bot.action("watch_lesson_two_button", async (ctx) => {
 
         setTimeout(async () => {
             await ctx.replyWithPhoto({source: '../assets/images/lesson2.jpg'}, {
+                protect_content: true,
                 parse_mode: "Markdown",
                 ...watchSecondLessonKeyboard
             })
-            ctx.replyWithHTML("Урок 2", watchSecondLessonKeyboard)
+            ctx.replyWithHTML("Урок 2", {
+                protect_content: true,
+                ...watchSecondLessonKeyboard
+            })
     
             setTimeout(async () => {
                 await ctx.replyWithPhoto({source: '../assets/images/test2.jpg'}, {
+                    protect_content: true,
                     caption: messages.secondVideoOutroMsg,
                     parse_mode: "Markdown",
                     ...keyboards.startSecondTestKeyboard
@@ -548,19 +642,35 @@ bot.action("watch_lesson_three_button", async (ctx) => {
 
     try {
         await ctx.replyWithPhoto({source: '../assets/images/lesson3.jpg'}, {
+            protect_content: true,
             parse_mode: "Markdown",
             ...watchThirdVideoKeyboard
         })
 
         setTimeout(async () => {
             if (ctx.session.userRate === 'pro') {
-                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
-                await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                    protect_content: true,
+                    reply_markup: {remove_keyboard: true}
+                })
+                await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {
+                    protect_content: true,
+                    ...keyboards.getAccessToChatKeyboard
+                })
             } else if (ctx.session.userRate === 'advanced') {
-                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
-                await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                    protect_content: true,
+                    reply_markup: {remove_keyboard: true}
+                })
+                await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {
+                    protect_content: true,
+                    ...keyboards.getAccessToChatKeyboard
+                })
             } else if (ctx.session.userRate === 'basic') {
-                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, keyboards.getAccessToChatKeyboard)
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                    protect_content: true,
+                    ...keyboards.getAccessToChatKeyboard
+                })
             }
         }, 5000);
 
@@ -569,19 +679,35 @@ bot.action("watch_lesson_three_button", async (ctx) => {
 
         setTimeout(async () => {
             await ctx.replyWithPhoto({source: '../assets/images/lesson3.jpg'}, {
+                protect_content: true,
                 parse_mode: "Markdown",
                 ...watchThirdVideoKeyboard
             })
     
             setTimeout(async () => {
                 if (ctx.session.userRate === 'pro') {
-                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
-                    await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
+                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                        protect_content: true,
+                        reply_markup: {remove_keyboard: true}
+                    })
+                    await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {
+                        protect_content: true,
+                        ...keyboards.getAccessToChatKeyboard
+                    })
                 } else if (ctx.session.userRate === 'advanced') {
-                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {reply_markup: {remove_keyboard: true}})
-                    await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, keyboards.getAccessToChatKeyboard)
+                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                        protect_content: true,
+                        reply_markup: {remove_keyboard: true}
+                    })
+                    await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {
+                        protect_content: true,
+                        ...keyboards.getAccessToChatKeyboard
+                    })
                 } else if (ctx.session.userRate === 'basic') {
-                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, keyboards.getAccessToChatKeyboard)
+                    await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                        protect_content: true,
+                        ...keyboards.getAccessToChatKeyboard
+                    })
                 }
             }, 5000);
         }, 2000);
@@ -597,7 +723,10 @@ bot.command("skip_advanced_pro_upgrade", async (ctx) => {
     await dataBase.updateUserAfterUpfgradeAdvToPro(userId)
     await dataBase.updateUserInfoAfterPayment(userId, userName, userPhone, userEmail)
     await dataBase.deleteUserPaymentKey(`${userEmail}`)
-    await ctx.replyWithHTML(messages.upgradeToProSuccess, keyboards.startSignUpForSessionKeyboard)
+    await ctx.replyWithHTML(messages.upgradeToProSuccess, {
+        protect_content: true,
+        ...keyboards.startSignUpForSessionKeyboard
+    })
 }) 
 
 
@@ -630,9 +759,14 @@ bot.action("get_access_to_chat_button", async (ctx) => {
 
     try {
         if (ctx.session.userRate === 'basic') {
-            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {reply_markup: {remove_keyboard: true}})
+            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {
+                protect_content: true,
+                reply_markup: {remove_keyboard: true}
+            })
         } else {
-            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi")
+            await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {
+                protect_content: true
+            })
         }
         
     } catch (error) {
@@ -640,46 +774,68 @@ bot.action("get_access_to_chat_button", async (ctx) => {
 
         setTimeout(async () => {
             if (ctx.session.userRate === 'basic') {
-                await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {reply_markup: {remove_keyboard: true}})
+                await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {
+                    protect_content: true,
+                    reply_markup: {remove_keyboard: true}
+                })
             } else {
-                await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi")
+                await ctx.replyWithHTML("https://t.me/+vRPrDecgJ5k1MmFi", {
+                    protect_content: true
+                })
             }
         }, 2000);
     }
 
     /*--------------RATE SEPARATION-------------*/
     if (ctx.session.userRate === 'pro') {
-        await ctx.replyWithHTML(messages.signUpForSessionMsg, keyboards.startSignUpForSessionKeyboard)
+        await ctx.replyWithHTML(messages.signUpForSessionMsg, {
+            protect_content: true,
+            ...keyboards.startSignUpForSessionKeyboard
+        })
     } else if (ctx.session.userRate === 'advanced') {
         try {
-            await ctx.replyWithVideo({source: '../assets/special_offers/special_advanced.mp4'})
+            await ctx.replyWithVideo({source: '../assets/special_offers/special_advanced.mp4'}, {
+                protect_content: true
+            })
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithVideo({source: '../assets/special_offers/special_advanced.mp4'})
+                await ctx.replyWithVideo({source: '../assets/special_offers/special_advanced.mp4'}, {
+                    protect_content: true
+                })
             }, 2000);
         }
 
         try {
             await dataBase.createPaymentTest()
             await dataBase.createPaymentTestAzhypa()
-            await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса ADVANCED, сейчас у тебя есть возможность апгрейднуться до PRO и попасть на стратегическую сессию 1-на-1 со мной всего за 20$.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня. Завтра оно сгорает. Так что думай и решай.\n\nЕсли интересно, вот тебе ссылка:\n${vars.ADVANCED_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.` , keyboards.checkUpgradeAdvToProKeyboard)
+            await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса ADVANCED, сейчас у тебя есть возможность апгрейднуться до PRO и попасть на стратегическую сессию 1-на-1 со мной всего за 20$.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня. Завтра оно сгорает. Так что думай и решай.\n\nЕсли интересно, вот тебе ссылка:\n${vars.ADVANCED_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.` , {
+                protect_content: true,
+                ...keyboards.checkUpgradeAdvToProKeyboard
+            })
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса ADVANCED, сейчас у тебя есть возможность апгрейднуться до PRO и попасть на стратегическую сессию 1-на-1 со мной всего за 20$.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня. Завтра оно сгорает. Так что думай и решай.\n\nЕсли интересно, вот тебе ссылка:\n${vars.ADVANCED_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.` , keyboards.checkUpgradeAdvToProKeyboard)
+                await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса ADVANCED, сейчас у тебя есть возможность апгрейднуться до PRO и попасть на стратегическую сессию 1-на-1 со мной всего за 20$.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня. Завтра оно сгорает. Так что думай и решай.\n\nЕсли интересно, вот тебе ссылка:\n${vars.ADVANCED_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.` , {
+                    protect_content: true,
+                    ...keyboards.checkUpgradeAdvToProKeyboard
+                })
             }, 2000);
         }
     } else if (ctx.session.userRate === 'basic') {
         try {
-            await ctx.replyWithVideo({source: "../assets/special_offers/special_basic.mp4"})
+            await ctx.replyWithVideo({source: "../assets/special_offers/special_basic.mp4"}, {
+                protect_content: true
+            })
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithVideo({source: "../assets/special_offers/special_basic.mp4"})
+                await ctx.replyWithVideo({source: "../assets/special_offers/special_basic.mp4"}, {
+                    protect_content: true
+                })
             }, 2000);
         }
 
@@ -687,12 +843,18 @@ bot.action("get_access_to_chat_button", async (ctx) => {
         await dataBase.createPaymentTestAzhypa(50)
         
         try {
-            await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса BASIC, я предлагаю тебе 2 апгрейда.\n\nДо advanced за 30$ - ты получишь +1 урок, с более углубленным материалом и разбором реальных коммерческих проектов.\n\nА апгрейд до PRO за 50$ даст тебе возможность не только получить +1 урок с разбором коммерческих проектов, но и стратегическую сессию, созвон 1-на-1 со мной.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня Завтра оно сгорает Так что думай и решай. Если интересно, вот тебе ссылки для оплаты:\n\nADVANCED: ${vars.BASIC_TO_ADVANCED_UPGRADE_LINK}\n\nPRO: ${vars.BASIC_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.`, keyboards.checkUpgradeBasicKeyboard)
+            await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса BASIC, я предлагаю тебе 2 апгрейда.\n\nДо advanced за 30$ - ты получишь +1 урок, с более углубленным материалом и разбором реальных коммерческих проектов.\n\nА апгрейд до PRO за 50$ даст тебе возможность не только получить +1 урок с разбором коммерческих проектов, но и стратегическую сессию, созвон 1-на-1 со мной.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня Завтра оно сгорает Так что думай и решай. Если интересно, вот тебе ссылки для оплаты:\n\nADVANCED: ${vars.BASIC_TO_ADVANCED_UPGRADE_LINK}\n\nPRO: ${vars.BASIC_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.`, {
+                protect_content: true,
+                ...keyboards.checkUpgradeBasicKeyboard
+            })
         } catch (error) {
             console.error(error);
 
             setTimeout(async () => {
-                await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса BASIC, я предлагаю тебе 2 апгрейда.\n\nДо advanced за 30$ - ты получишь +1 урок, с более углубленным материалом и разбором реальных коммерческих проектов.\n\nА апгрейд до PRO за 50$ даст тебе возможность не только получить +1 урок с разбором коммерческих проектов, но и стратегическую сессию, созвон 1-на-1 со мной.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня Завтра оно сгорает Так что думай и решай. Если интересно, вот тебе ссылки для оплаты:\n\nADVANCED: ${vars.BASIC_TO_ADVANCED_UPGRADE_LINK}\n\nPRO: ${vars.BASIC_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.`, keyboards.checkUpgradeBasicKeyboard)
+                await ctx.replyWithHTML(`Итак, специальное предложение.\n\nПоскольку ты приобрёл версию мастеркласса BASIC, я предлагаю тебе 2 апгрейда.\n\nДо advanced за 30$ - ты получишь +1 урок, с более углубленным материалом и разбором реальных коммерческих проектов.\n\nА апгрейд до PRO за 50$ даст тебе возможность не только получить +1 урок с разбором коммерческих проектов, но и стратегическую сессию, созвон 1-на-1 со мной.\n\nОбсудим твои проекты, твою персональную стратегию роста и может быть, что-то ещё :)\n\nЭто предложение одного дня Завтра оно сгорает Так что думай и решай. Если интересно, вот тебе ссылки для оплаты:\n\nADVANCED: ${vars.BASIC_TO_ADVANCED_UPGRADE_LINK}\n\nPRO: ${vars.BASIC_TO_PRO_UPGRADE_LINK}\n\nПосле оплаты возвращайся сюда.`, {
+                    protect_content: true,
+                    ...keyboards.checkUpgradeBasicKeyboard
+                })
             }, 2000);
         }
     }
@@ -711,7 +873,7 @@ bot.action("start_sign_up_button", async (ctx) => {
         logger.error(`${ctx.from.username} | ${ctx.from.id} | ${error.message}`)
 
         setTimeout(async () => {
-            await ctx.replyWithHTML(messages.userFullName.ru)
+            await ctx.replyWithHTML(messages.userFullName)
         }, 2000);
     }
 })
@@ -776,13 +938,17 @@ bot.action("answers_are_right_button", async (ctx) => {
         console.error(error);
     }
     try {
-        await ctx.replyWithHTML(messages.proFinalMsg)
+        await ctx.replyWithHTML(messages.proFinalMsg, {
+            protect_content: true
+        })
         await dataBase.addUserSignUpAnswers(userId, ctx.session.fullName, ctx.session.instName, ctx.session.whoAreYou, ctx.session.userAim, ctx.session.realizeAim, ctx.session.userWeaknesses, ctx.session.userClient)
     } catch (error) {
         console.error(error);
 
         setTimeout(async () => {
-            await ctx.replyWithHTML(messages.proFinalMsg)
+            await ctx.replyWithHTML(messages.proFinalMsg, {
+                protect_content: true
+            })
         }, 2000);
 
         setTimeout(async () => {
@@ -800,6 +966,7 @@ bot.action("basic_to_advanced_video_four_button", async (ctx) => {
 
     try {
         await ctx.replyWithPhoto({source: '../assets/images/lesson4.jpg'}, {
+            protect_content: true,
             parse_mode: "Markdown",
             ...watchLessonFour
         })
@@ -807,14 +974,22 @@ bot.action("basic_to_advanced_video_four_button", async (ctx) => {
         console.error(error);
 
         setTimeout(async () => {
-            await ctx.replyWithHTML("Урок 4", watchLessonFour)
+            await ctx.replyWithHTML("Урок 4", {
+                protect_content: true,
+                ...watchLessonFour
+            })
         }, 2000);
     }
 
     try {
         setTimeout(async () => {
-            await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {reply_markup: {remove_keyboard: true}})
-            await ctx.replyWithHTML(messages.basicToAdvancedFinalMsg)
+            await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {
+                protect_content: true,
+                reply_markup: {remove_keyboard: true}
+            })
+            await ctx.replyWithHTML(messages.basicToAdvancedFinalMsg, {
+                protect_content: true,
+            })
         }, 5000);
     } catch (error) {
         
@@ -830,23 +1005,39 @@ bot.action("basic_to_pro_video_four_button", async (ctx) => {
 
     try {
         await ctx.replyWithPhoto({source: '../assets/images/lesson4.jpg'}, {
+            protect_content: true,
             parse_mode: "Markdown",
             ...watchLessonFour
         })
 
         setTimeout(async () => {
-            await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {reply_markup: {remove_keyboard: true}})
-            await ctx.replyWithHTML(messages.signUpForSessionMsg, keyboards.startSignUpForSessionKeyboard)
+            await ctx.replyWithDocument({source: '../assets/images/formula1.png'}, {
+                protect_content: true,
+                reply_markup: {remove_keyboard: true}
+            })
+            await ctx.replyWithHTML(messages.signUpForSessionMsg, {
+                protect_content: true,
+                ...keyboards.startSignUpForSessionKeyboard
+            })
         }, 5000);
     } catch (error) {
         console.error(error);
 
         setTimeout(async () => {
-            await ctx.replyWithHTML("Урок 4", watchLessonFour)
+            await ctx.replyWithHTML("Урок 4", {
+                protect_content: true,
+                ...watchLessonFour
+            })
     
             setTimeout(async () => {
-                await ctx.replyWithDocument({source: '../assets/images/formula2.png'})
-                await ctx.replyWithHTML(messages.signUpForSessionMsg, keyboards.startSignUpForSessionKeyboard)
+                await ctx.replyWithDocument({source: '../assets/images/formula2.png'}, {
+                    protect_content: true,
+                    ...watchLessonFour
+                })
+                await ctx.replyWithHTML(messages.signUpForSessionMsg, {
+                    protect_content: true,
+                    ...keyboards.startSignUpForSessionKeyboard
+                })
             }, 5000);
         }, 2000);
     }
@@ -863,7 +1054,8 @@ bot.action("basic_to_pro_video_four_button", async (ctx) => {
 
 
 /*---------------------BOT LAUNCH-----------------*/
-bot.launch()
+const option = {dropPendingUpdates: true}
+bot.launch(option)
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
